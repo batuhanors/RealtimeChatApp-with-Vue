@@ -14,12 +14,20 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
+let userList = [];
+
 //Run when client connect
 io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
+  });
+
+  socket.on("new-user", (username) => {
+    userList.push(username);
+    console.log(userList);
+    io.emit("users", userList);
   });
 
   socket.on("message", (msg) => {

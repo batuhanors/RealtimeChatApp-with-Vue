@@ -10,10 +10,18 @@ class SocketioService {
     this.socket.on("broadcast", (data) => {
       store.commit("addMessage", data);
     });
+    this.socket.on("users", (users) => {
+      store.commit("getUsers", users);
+      console.log(users);
+    });
   }
 
   message(msg) {
     this.socket.emit("message", msg);
+  }
+
+  adduser(name) {
+    this.socket.emit("new-user", name);
   }
 
   disconnect() {

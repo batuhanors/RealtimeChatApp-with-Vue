@@ -9,11 +9,17 @@
         <h3>Room Name:</h3>
         <h2 id="room-name">Default</h2>
         <h3>Users</h3>
-        <ul id="users"></ul>
+        <div>
+          <div v-for="user in $store.state.users" :key="user">
+            <div v-for="singleuser in user" :key="singleuser">
+              {{ singleuser }}
+            </div>
+          </div>
+        </div>
       </div>
       <div class="chat-messages">
         <div v-for="message in $store.state.message" :key="message">
-          <p>{{ message }}</p>
+          <p class="message">{{ message }}</p>
         </div>
       </div>
     </main>
@@ -48,6 +54,7 @@ export default {
 
     onMounted(() => {
       SocketioService.setupSocketConnection();
+      SocketioService.adduser(store.state.username);
     });
 
     onBeforeUnmount(() => {
@@ -55,6 +62,8 @@ export default {
     });
 
     const leaveHandler = () => {
+      store.commit("clearUsers");
+
       router.push({ name: "Login" });
     };
 
@@ -116,29 +125,17 @@ export default {
 }
 
 .chat-messages {
-  padding: 30px;
-  max-height: 500px;
+  padding-top: 20px;
+  max-height: 300px;
   overflow-y: scroll;
   background-color: azure;
 }
 
-.chat-messages .message {
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  overflow-wrap: break-word;
-}
-
-.chat-messages .message .meta {
-  font-size: 15px;
+.message {
+  text-align: left;
+  padding-left: 24px;
+  font-size: 20px;
   font-weight: bold;
-  color: #152d35;
-  opacity: 0.7;
-  margin-bottom: 7px;
-}
-
-.chat-messages .message .meta span {
-  color: #777;
 }
 
 .chat-form-container {
@@ -151,7 +148,8 @@ export default {
 }
 
 .chat-form-container input[type="text"] {
-  font-size: 16px;
+  font-size: 20px;
+  font-weight: bold;
   padding: 5px;
   height: 40px;
   flex: 1;

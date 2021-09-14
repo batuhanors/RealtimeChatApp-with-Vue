@@ -63,6 +63,7 @@ input {
   height: 30px;
   outline-color: #3db2ff;
   font-size: 18px;
+  font-family: inherit;
   border: none;
   border-radius: 5px;
   margin-bottom: 2rem;
